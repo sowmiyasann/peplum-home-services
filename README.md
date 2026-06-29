@@ -1,6 +1,8 @@
 
 # PEPLUM HOME SERVICES
 
+unexpected car breakdown? unfortunate pipe leakage? don't know who to call? we got you covered!
+
 A full stack home services booking platform that connects customers with trusted service providers for home-based services.
 
 Customers can browse services, schedule appointments, and pay after successful completion of work, while service providers can register, manage availability, and receive appointments.
