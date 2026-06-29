@@ -1,5 +1,8 @@
 from django.contrib import admin
+
 from django.urls import path
+
+from django.urls import include
 
 from services.views import home
 
@@ -14,6 +17,13 @@ admin.site.urls
 path(
 '',
 home
+),
+
+path(
+'',
+include(
+'users.urls'
 )
+),
 
 ]
