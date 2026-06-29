@@ -1,65 +1,76 @@
 from pathlib import Path
-
-BASE_DIR=Path(__file__).resolve().parent.parent
-
-
-SECRET_KEY='peplum-secret'
-
-DEBUG=True
-
-ALLOWED_HOSTS=[]
+import os
 
 
-INSTALLED_APPS=[
+BASE_DIR = Path(__file__).resolve().parent.parent
 
-'django.contrib.admin',
-'django.contrib.auth',
-'django.contrib.contenttypes',
-'django.contrib.sessions',
-'django.contrib.messages',
-'django.contrib.staticfiles',
 
-'users',
-'services',
-'bookings',
+SECRET_KEY = os.getenv(
+    "SECRET_KEY",
+    "django-dev-secret"
+)
+
+
+DEBUG = os.getenv(
+    "DEBUG",
+    "True"
+) == "True"
+
+
+ALLOWED_HOSTS = [
+    "*"
+]
+
+
+INSTALLED_APPS = [
+
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+
+    'users',
+    'services',
+    'bookings',
 
 ]
 
 
-MIDDLEWARE=[
+MIDDLEWARE = [
 
-'django.middleware.security.SecurityMiddleware',
+    'django.middleware.security.SecurityMiddleware',
 
-'django.contrib.sessions.middleware.SessionMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 
-'django.middleware.common.CommonMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
 
-'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.common.CommonMiddleware',
 
-'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
 
-'django.contrib.messages.middleware.MessageMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+
+    'django.contrib.messages.middleware.MessageMiddleware',
 
 ]
 
 
-ROOT_URLCONF='core.urls'
+ROOT_URLCONF = 'core.urls'
 
 
-TEMPLATES=[
+TEMPLATES = [
 
 {
-
 'BACKEND':
 'django.template.backends.django.DjangoTemplates',
 
-'DIRS':
-[
+'DIRS':[
 BASE_DIR/'templates'
 ],
 
-'APP_DIRS':
-True,
+'APP_DIRS':True,
 
 'OPTIONS':{
 
@@ -80,10 +91,10 @@ True,
 ]
 
 
-WSGI_APPLICATION='core.wsgi.application'
+WSGI_APPLICATION = 'core.wsgi.application'
 
 
-DATABASES={
+DATABASES = {
 
 'default':{
 
@@ -98,16 +109,11 @@ BASE_DIR/'db.sqlite3',
 }
 
 
-STATIC_URL='/static/'
-
-STATICFILES_DIRS=[
-BASE_DIR/'static'
-]
+AUTH_PASSWORD_VALIDATORS = []
 
 
-MEDIA_URL='/media/'
+LANGUAGE_CODE = 'en-us'
 
-MEDIA_ROOT=BASE_DIR/'media'
+TIME_ZONE = 'UTC'
 
-
-AUTH_USER_MODEL='users.User'
+USE_I18N = True
