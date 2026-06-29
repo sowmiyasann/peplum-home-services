@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<link rel="stylesheet"
+href="/static/css/style.css">
+
+</head>
+
+<body>
+
+<div class="auth">
+
+<h1>
+
+Create Account
+
+</h1>
+
+<form method="POST">
+
+{% csrf_token %}
+
+<input
+name="username"
+placeholder="Username">
+
+<input
+name="email"
+placeholder="Email">
+
+<input
+name="password"
+type="password"
+placeholder="Password">
+
+<select
+name="role">
+
+<option value="customer">
+
+Customer
+
+</option>
+
+<option value="provider">
+
+Service Provider
+
+</option>
+
+</select>
+
+<button>
+
+Register
+
+</button>
+
+</form>
+
+</div>
+
+</body>
+
+</html>
