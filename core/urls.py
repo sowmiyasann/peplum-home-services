@@ -26,4 +26,11 @@ include(
 )
 ),
 
+path(
+'',
+include(
+'bookings.urls'
+)
+),
+
 ]
