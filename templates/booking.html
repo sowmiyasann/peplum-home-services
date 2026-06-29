@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<link
+rel="stylesheet"
+href="/static/css/style.css">
+
+</head>
+
+<body>
+
+<div class="auth">
+
+<h1>
+
+Book Service
+
+</h1>
+
+<form method="POST">
+
+{% csrf_token %}
+
+<input
+
+name="customer"
+
+placeholder="Your Name"
+
+>
+
+
+<input
+
+name="provider"
+
+placeholder="Provider Name"
+
+>
+
+
+<input
+
+type="date"
+
+name="date"
+
+>
+
+
+<input
+
+type="time"
+
+name="time"
+
+>
+
+
+<button>
+
+Confirm Booking
+
+</button>
+
+</form>
+
+</div>
+
+</body>
+
+</html>
