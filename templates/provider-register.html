@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<link
+rel="stylesheet"
+href="/static/css/style.css">
+
+</head>
+
+<body>
+
+<div class="auth">
+
+<h1>
+
+Provider Registration
+
+</h1>
+
+<form method="POST">
+
+{% csrf_token %}
+
+<input
+name="name"
+placeholder="Full Name">
+
+<input
+name="email"
+placeholder="Email">
+
+<input
+name="phone"
+placeholder="Phone">
+
+<select
+name="service">
+
+<option>
+mechanic
+</option>
+
+<option>
+plumber
+</option>
+
+<option>
+electrician
+</option>
+
+<option>
+cleaning
+</option>
+
+<option>
+cooking
+</option>
+
+</select>
+
+<input
+name="experience"
+placeholder="Years Experience">
+
+<input
+name="location"
+placeholder="Location">
+
+<button>
+
+Submit
+
+</button>
+
+</form>
+
+</div>
+
+</body>
+
+</html>
