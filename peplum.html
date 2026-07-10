@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Peplum Home Services</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#12081F;
+    --bg-deep:#150A2A;
+    --bg-deep2:#1D1040;
+    --violet:#7C4DFF;
+    --violet-dark:#5B21D6;
+    --violet-light:#B79CFF;
+    --lilac:#F3EFFC;
+    --surface:#FFFFFF;
+    --paper:#FAF8FF;
+    --text:#1E1830;
+    --muted:#6E6584;
+    --line:#E8E3F5;
+    --success:#1FAE6E;
+    --success-bg:#E6F8EF;
+    --warn:#E08A1E;
+    --warn-bg:#FCF0DD;
+    --radius:16px;
+    --shadow: 0 20px 40px -20px rgba(38,17,84,0.25);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:'Inter',sans-serif;
+    color:var(--text);
+    background:var(--paper);
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{font-family:'Sora',sans-serif;}
+  a{text-decoration:none; color:inherit;}
+  button{font-family:'Inter',sans-serif; cursor:pointer; border:none;}
+  ul{list-style:none;}
+  img{max-width:100%; display:block;}
+
+  .page{display:none;}
+  .page.active{display:block; animation:fadeIn .35s ease;}
+  @keyframes fadeIn{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
+
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    padding:12px 22px; border-radius:10px; font-weight:600; font-size:14.5px;
+    transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
+  }
+  .btn:active{transform:scale(.97);}
+  .btn-primary{
+    background:linear-gradient(135deg,#8B5CF6,var(--violet-dark));
+    color:#fff;
+    box-shadow:0 10px 20px -8px rgba(124,77,255,0.55);
+  }
+  .btn-primary:hover{box-shadow:0 14px 26px -8px rgba(124,77,255,0.7);}
+  .btn-outline{
+    background:transparent; color:#fff; border:1.5px solid rgba(255,255,255,0.5);
+  }
+  .btn-outline:hover{background:rgba(255,255,255,0.08);}
+  .btn-ghost{
+    background:var(--lilac); color:var(--violet-dark);
+  }
+  .btn-ghost:hover{background:#E9E0FF;}
+  .btn-sm{padding:8px 16px; font-size:13px; border-radius:8px;}
+  .btn-block{width:100%;}
+
+  /* ===== NAVBAR (landing) ===== */
+  .site-header{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:22px 48px; position:relative; z-index:5;
+  }
+  .brand{display:flex; align-items:center; gap:12px; color:#fff;}
+  .brand-icon{
+    width:42px; height:42px; border-radius:12px;
+    background:linear-gradient(135deg,#8B5CF6,var(--violet-dark));
+    display:flex; align-items:center; justify-content:center; font-size:19px;
+  }
+  .brand-name{font-family:'Sora',sans-serif; font-weight:800; font-size:18px; letter-spacing:0.5px;}
+  .brand-sub{font-size:10px; letter-spacing:2px; color:var(--violet-light); font-weight:600;}
+  .nav-links{display:flex; gap:34px; color:#EDE8FB; font-weight:500; font-size:14.5px;}
+  .nav-links a{position:relative; padding-bottom:6px; transition:color .15s;}
+  .nav-links a:hover{color:#fff;}
+  .nav-links a.active-link::after{
+    content:""; position:absolute; left:0; right:0; bottom:0; height:2px;
+    background:var(--violet-light); border-radius:2px;
+  }
+  .nav-cta{display:flex; gap:12px;}
+
+  /* ===== HERO ===== */
+  .hero-wrap{
+    background:
+      radial-gradient(circle at 85% 15%, rgba(139,92,246,0.35), transparent 45%),
+      linear-gradient(160deg, var(--ink) 0%, var(--bg-deep2) 65%, var(--ink) 100%);
+    padding-bottom:70px; position:relative; overflow:hidden;
+  }
+  .hero-grid{
+    display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:center;
+    max-width:1280px; margin:0 auto; padding:40px 48px 0;
+  }
+  .eyebrow-row{display:flex; gap:8px; align-items:center; margin-bottom:18px;}
+  .eyebrow-dot{width:8px; height:8px; border-radius:50%; background:var(--violet-light); box-shadow:0 0 12px var(--violet-light);}
+  .eyebrow{color:var(--violet-light); font-size:12.5px; letter-spacing:2px; font-weight:700; text-transform:uppercase;}
+  .hero-title{
+    font-size:52px; line-height:1.08; font-weight:800; color:#fff; margin-bottom:20px; letter-spacing:-0.5px;
+  }
+  .hero-title .accent{
+    background:linear-gradient(90deg,#B79CFF,#8B5CF6);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .hero-desc{color:#C7BFE0; font-size:16px; line-height:1.7; max-width:460px; margin-bottom:30px;}
+  .hero-actions{display:flex; gap:14px; margin-bottom:44px;}
+  .hero-stats{display:flex; gap:34px; flex-wrap:wrap;}
+  .hero-stat{display:flex; align-items:center; gap:10px; color:#D8D2EE; font-size:13px; font-weight:500;}
+  .hero-stat i{color:var(--violet-light); font-size:16px;}
+
+  .services-panel{
+    background:var(--surface); border-radius:22px; padding:30px; box-shadow:0 30px 60px -20px rgba(0,0,0,0.5);
+  }
+  .services-panel-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:20px;}
+  .services-panel-head h3{font-size:19px; font-weight:700;}
+  .services-panel-head a{color:var(--violet); font-size:13.5px; font-weight:600;}
+  .service-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  .service-card{
+    border:1px solid var(--line); border-radius:14px; overflow:hidden; cursor:pointer;
+    transition:transform .18s ease, box-shadow .18s ease, border-color .18s;
+    background:var(--paper);
+  }
+  .service-card:hover{transform:translateY(-4px); box-shadow:var(--shadow); border-color:var(--violet-light);}
+  .service-img{
+    height:92px; display:flex; align-items:center; justify-content:center; font-size:30px; color:#fff;
+    position:relative; overflow:hidden;
+  }
+  .service-illus{ width:70px; height:70px; overflow:visible; }
+  .service-body{padding:14px 16px 16px;}
+  .service-body-icon{color:var(--violet); font-size:14px; margin-bottom:6px;}
+  .service-body h4{font-size:14.5px; margin-bottom:4px;}
+  .service-body p{font-size:12.5px; color:var(--muted); line-height:1.5;}
+  .grad-1{background:linear-gradient(135deg,#4C6FFF,#7C4DFF);}
+  .grad-2{background:linear-gradient(135deg,#F5A623,#E08A1E);}
+  .grad-3{background:linear-gradient(135deg,#3BB7C4,#2C8F9C);}
+  .grad-4{background:linear-gradient(135deg,#8B5CF6,#5B21D6);}
+  .grad-5{background:linear-gradient(135deg,#FF7A7A,#E5484D);}
+
+  @media (max-width:900px){
+    .hero-grid{grid-template-columns:1fr; padding:24px;}
+    .nav-links{display:none;}
+    .hero-title{font-size:38px;}
+    .site-header{padding:18px 24px;}
+  }
+
+  /* ===== HOW IT WORKS / FOOTER (landing extras) ===== */
+  .section{max-width:1280px; margin:0 auto; padding:80px 48px;}
+  .section-head{text-align:center; max-width:560px; margin:0 auto 48px;}
+  .section-head .eyebrow{color:var(--violet); display:inline-block; margin-bottom:10px;}
+  .section-head h2{font-size:32px; margin-bottom:12px;}
+  .section-head p{color:var(--muted); font-size:15px; line-height:1.6;}
+  .steps-row{display:grid; grid-template-columns:repeat(3,1fr); gap:24px;}
+  .step-card{background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:28px;}
+  .step-num{
+    width:36px; height:36px; border-radius:10px; background:var(--lilac); color:var(--violet-dark);
+    display:flex; align-items:center; justify-content:center; font-weight:700; font-family:'Sora'; margin-bottom:16px;
+  }
+  .step-card h4{font-size:16px; margin-bottom:8px;}
+  .step-card p{font-size:13.5px; color:var(--muted); line-height:1.6;}
+  footer{background:var(--ink); color:#B6AFCF; padding:40px 48px; text-align:center; font-size:13px;}
+  footer .brand-name{color:#fff;}
+  @media (max-width:900px){ .steps-row{grid-template-columns:1fr;} }
+
+  /* ===== AUTH PAGES ===== */
+  .auth-shell{
+    min-height:100vh; display:grid; grid-template-columns:1fr 1fr;
+    background:var(--paper);
+  }
+  .auth-visual{
+    background:linear-gradient(160deg, var(--ink), var(--bg-deep2));
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:26px;
+    position:relative; overflow:hidden; padding:40px;
+  }
+  .auth-visual::before{
+    content:""; position:absolute; width:420px; height:420px; border-radius:50%;
+    background:radial-gradient(circle, rgba(139,92,246,0.35), transparent 70%); top:-100px; right:-100px;
+  }
+  .auth-illustration{
+    width:220px; height:220px; border-radius:28px; background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.12);
+    display:flex; align-items:center; justify-content:center; font-size:80px; color:var(--violet-light);
+    z-index:1;
+  }
+  .auth-visual h3{color:#fff; font-size:22px; z-index:1; text-align:center;}
+  .auth-visual p{color:#B6AFCF; font-size:13.5px; text-align:center; max-width:280px; z-index:1; line-height:1.6;}
+  .auth-form-col{display:flex; align-items:center; justify-content:center; padding:40px;}
+  .auth-card{width:100%; max-width:400px;}
+  .auth-back{display:flex; align-items:center; gap:8px; color:var(--muted); font-size:13.5px; margin-bottom:28px; font-weight:500;}
+  .auth-back:hover{color:var(--violet);}
+  .auth-card h2{font-size:26px; margin-bottom:6px;}
+  .auth-card .sub{color:var(--muted); font-size:14px; margin-bottom:26px;}
+  .field{margin-bottom:16px;}
+  .field label{display:block; font-size:13px; font-weight:600; margin-bottom:6px; color:var(--text);}
+  .field input, .field select{
+    width:100%; padding:12px 14px; border-radius:10px; border:1.5px solid var(--line);
+    font-size:14px; font-family:'Inter'; background:var(--surface); transition:border-color .15s;
+  }
+  .field input:focus, .field select:focus{outline:none; border-color:var(--violet);}
+  .field-row{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  .form-foot-link{text-align:right; margin-bottom:18px;}
+  .form-foot-link a, .switch-line a{color:var(--violet); font-weight:600;}
+  .switch-line{text-align:center; margin-top:18px; font-size:13.5px; color:var(--muted);}
+  .role-tabs{display:flex; background:var(--lilac); border-radius:10px; padding:4px; margin-bottom:22px;}
+  .role-tab{flex:1; text-align:center; padding:10px; border-radius:8px; font-weight:600; font-size:13.5px; color:var(--muted); transition:all .15s;}
+  .role-tab.active{background:var(--surface); color:var(--violet-dark); box-shadow:0 4px 10px rgba(0,0,0,0.08);}
+  .file-row{display:flex; align-items:center; gap:12px;}
+  .file-btn{background:var(--lilac); color:var(--violet-dark); padding:10px 16px; border-radius:8px; font-size:13px; font-weight:600; white-space:nowrap;}
+  .file-name{font-size:13px; color:var(--muted);}
+
+  @media (max-width:860px){
+    .auth-shell{grid-template-columns:1fr;}
+    .auth-visual{display:none;}
+  }
+
+  /* ===== DASHBOARD SHELL ===== */
+  .dash-shell{display:flex; min-height:100vh; background:var(--paper);}
+  .sidebar{
+    width:230px; background:var(--surface); border-right:1px solid var(--line);
+    display:flex; flex-direction:column; padding:24px 16px; flex-shrink:0;
+  }
+  .sidebar .brand{color:var(--text); margin-bottom:34px; padding-left:8px;}
+  .sidebar .brand-sub{color:var(--violet);}
+  .side-link{
+    display:flex; align-items:center; gap:12px; padding:11px 14px; border-radius:10px;
+    font-size:14px; font-weight:500; color:var(--muted); margin-bottom:4px; transition:all .15s;
+  }
+  .side-link i{width:18px; text-align:center;}
+  .side-link:hover{background:var(--lilac); color:var(--violet-dark);}
+  .side-link.active{background:linear-gradient(135deg,#8B5CF6,var(--violet-dark)); color:#fff;}
+  .sidebar-bottom{margin-top:auto;}
+
+  .dash-main{flex:1; padding:28px 40px; min-width:0;}
+  .topbar{display:flex; align-items:center; justify-content:space-between; margin-bottom:28px;}
+  .topbar-links{display:flex; gap:26px; font-size:14px; color:var(--muted); font-weight:500;}
+  .topbar-user{display:flex; align-items:center; gap:10px; font-size:14px; font-weight:600;}
+  .avatar{
+    width:38px; height:38px; border-radius:50%; background:linear-gradient(135deg,#8B5CF6,var(--violet-dark));
+    display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-size:14px;
+  }
+  .welcome-block{margin-bottom:26px;}
+  .welcome-block h2{font-size:24px; margin-bottom:4px;}
+  .welcome-block p{color:var(--muted); font-size:14px;}
+  .stat-row{display:grid; grid-template-columns:repeat(4,1fr); gap:18px; margin-bottom:32px;}
+  .stat-card{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:20px;}
+  .stat-card .label{font-size:12.5px; color:var(--muted); font-weight:600; margin-bottom:8px;}
+  .stat-card .value{font-size:26px; font-weight:800; font-family:'Sora';}
+  .stat-card.accent .value{color:var(--violet);}
+  .panel{background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:24px;}
+  .panel-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:18px;}
+  .panel-head h3{font-size:17px;}
+  .booking-row{
+    display:flex; align-items:center; gap:14px; padding:14px 0; border-bottom:1px solid var(--line);
+  }
+  .booking-row:last-child{border-bottom:none;}
+  .booking-avatar{
+    width:44px; height:44px; border-radius:12px; background:var(--lilac); color:var(--violet-dark);
+    display:flex; align-items:center; justify-content:center; font-size:17px; flex-shrink:0;
+  }
+  .booking-info{flex:1; min-width:0;}
+  .booking-info h4{font-size:14.5px; margin-bottom:3px;}
+  .booking-info p{font-size:12.5px; color:var(--muted);}
+  .badge{padding:5px 12px; border-radius:20px; font-size:12px; font-weight:700;}
+  .badge-success{background:var(--success-bg); color:var(--success);}
+  .badge-warn{background:var(--warn-bg); color:var(--warn);}
+  @media (max-width:1000px){ .stat-row{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:760px){ .sidebar{display:none;} .dash-main{padding:24px;} }
+
+  /* ===== BROWSE PROVIDERS ===== */
+  .browse-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:22px;}
+  .provider-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:20px;}
+  .provider-card{background:var(--surface); border:1px solid var(--line); border-radius:16px; overflow:hidden; transition:box-shadow .15s;}
+  .provider-card:hover{box-shadow:var(--shadow);}
+  .provider-photo{
+    height:130px; background:linear-gradient(135deg,#8B5CF6,var(--violet-dark)); display:flex; align-items:center; justify-content:center; color:#fff; font-size:46px;
+  }
+  .provider-body{padding:16px;}
+  .provider-body h4{font-size:15.5px; margin-bottom:3px;}
+  .provider-body .loc{font-size:12.5px; color:var(--muted); margin-bottom:8px;}
+  .provider-meta{display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;}
+  .rating{font-size:12.5px; font-weight:700; color:var(--warn); display:flex; gap:4px; align-items:center;}
+  .exp{font-size:12px; color:var(--muted);}
+  .price-row{display:flex; align-items:center; justify-content:space-between;}
+  .price{font-weight:700; font-size:14px;}
+  @media (max-width:1000px){ .provider-grid{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:700px){ .provider-grid{grid-template-columns:1fr;} }
+
+  /* ===== BOOKING DETAIL ===== */
+  .back-link{display:inline-flex; align-items:center; gap:8px; color:var(--muted); font-weight:600; font-size:14px; margin-bottom:20px;}
+  .back-link:hover{color:var(--violet);}
+  .detail-grid{display:grid; grid-template-columns:1.1fr 1fr; gap:22px; align-items:start;}
+  .detail-provider{display:flex; gap:14px; margin-bottom:22px; padding-bottom:22px; border-bottom:1px solid var(--line);}
+  .detail-provider .photo{
+    width:56px; height:56px; border-radius:12px; background:linear-gradient(135deg,#8B5CF6,var(--violet-dark));
+    display:flex; align-items:center; justify-content:center; color:#fff; font-size:22px;
+  }
+  .detail-provider h4{font-size:16px; margin-bottom:3px;}
+  .detail-provider .rating{margin-bottom:2px;}
+  .detail-provider .loc{font-size:12.5px; color:var(--muted);}
+  .detail-rows{display:flex; flex-direction:column; gap:16px; margin-bottom:22px;}
+  .detail-row .k{font-size:12px; color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:0.4px; margin-bottom:3px;}
+  .detail-row .v{font-size:14.5px; font-weight:600;}
+  .total-row{display:flex; align-items:center; justify-content:space-between; padding-top:18px; border-top:1px solid var(--line);}
+  .total-row .v{font-size:22px; color:var(--violet-dark);}
+  .timeline{display:flex; flex-direction:column;}
+  .tl-item{display:flex; gap:16px; position:relative; padding-bottom:30px;}
+  .tl-item:last-child{padding-bottom:0;}
+  .tl-item::before{
+    content:""; position:absolute; left:15px; top:34px; bottom:0; width:2px; background:var(--line);
+  }
+  .tl-item:last-child::before{display:none;}
+  .tl-dot{
+    width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    flex-shrink:0; font-size:14px; z-index:1;
+  }
+  .tl-dot.done{background:var(--success); color:#fff;}
+  .tl-dot.pending{background:var(--line); color:var(--muted);}
+  .tl-text h5{font-size:14.5px; margin-bottom:3px;}
+  .tl-text p{font-size:12.5px; color:var(--muted);}
+  @media (max-width:860px){ .detail-grid{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+
+<!-- ============= LANDING PAGE ============= -->
+<div id="page-landing" class="page active">
+  <div class="hero-wrap">
+    <header class="site-header">
+      <div class="brand">
+        <div class="brand-icon"><i class="fa-solid fa-house-chimney"></i></div>
+        <div>
+          <div class="brand-name">PEPLUM</div>
+          <div class="brand-sub">HOME SERVICES</div>
+        </div>
+      </div>
+      <nav class="nav-links">
+        <a href="#" class="active-link">Home</a>
+        <a onclick="goToBrowse('plumber')">Services</a>
+        <a href="#how-it-works-anchor" onclick="scrollToSection(event,'how-it-works-anchor')">How It Works</a>
+        <a href="#about-anchor" onclick="scrollToSection(event,'about-anchor')">About Us</a>
+        <a href="#contact-anchor" onclick="scrollToSection(event,'contact-anchor')">Contact</a>
+      </nav>
+      <div class="nav-cta">
+        <button class="btn btn-outline" onclick="showPage('page-login')">Login</button>
+        <button class="btn btn-primary" onclick="showPage('page-register')">Register</button>
+      </div>
+    </header>
+
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow-row"><span class="eyebrow-dot"></span><span class="eyebrow">Trusted by 12,000+ homes</span></div>
+        <h1 class="hero-title">Reliable Home<br>Services, Just a<br><span class="accent">Click Away</span></h1>
+        <p class="hero-desc">Book trusted professionals for your home needs. Pay after the service is done — no surprises, no upfront risk.</p>
+        <div class="hero-actions">
+          <button class="btn btn-primary" onclick="goToBrowse('plumber')">Book a Service</button>
+          <button class="btn btn-outline" onclick="showPage('page-provider-register')">Become a Provider</button>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat"><i class="fa-solid fa-shield-halved"></i> Verified Professionals</div>
+          <div class="hero-stat"><i class="fa-regular fa-clock"></i> On-time Service</div>
+          <div class="hero-stat"><i class="fa-regular fa-credit-card"></i> Secure Payment</div>
+          <div class="hero-stat"><i class="fa-solid fa-headset"></i> 24/7 Support</div>
+        </div>
+      </div>
+
+      <div class="services-panel">
+        <div class="services-panel-head">
+          <h3>Popular Services</h3>
+          <a onclick="goToBrowse('plumber')">View all →</a>
+        </div>
+        <div class="service-grid">
+          <div class="service-card" onclick="goToBrowse('plumber')">
+            <div class="service-img grad-1">
+              <svg viewBox="0 0 120 90" class="service-illus">
+                <circle cx="80" cy="18" r="9" fill="#fff" opacity=".95"/>
+                <path d="M62 46c0-10 8-17 18-17s18 7 18 17v10H62V46z" fill="#fff" opacity=".92"/>
+                <rect x="66" y="52" width="14" height="20" rx="4" fill="#fff" opacity=".85"/>
+                <rect x="82" y="52" width="14" height="20" rx="4" fill="#fff" opacity=".85"/>
+                <rect x="14" y="40" width="46" height="10" rx="5" fill="#fff" opacity=".9"/>
+                <rect x="14" y="40" width="10" height="34" rx="5" fill="#fff" opacity=".9"/>
+                <circle cx="19" cy="30" r="7" fill="none" stroke="#fff" stroke-width="4" opacity=".9"/>
+                <path d="M30 16c3 5 3 9 0 13M38 16c3 5 3 9 0 13" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" opacity=".8"/>
+              </svg>
+            </div>
+            <div class="service-body"><div class="service-body-icon"><i class="fa-solid fa-droplet"></i></div><h4>Plumber</h4><p>Fix leaks, pipes, fittings and more.</p></div>
+          </div>
+          <div class="service-card" onclick="goToBrowse('electrician')">
+            <div class="service-img grad-2">
+              <svg viewBox="0 0 120 90" class="service-illus">
+                <circle cx="38" cy="20" r="9" fill="#fff" opacity=".95"/>
+                <path d="M20 48c0-10 8-17 18-17s18 7 18 17v10H20V48z" fill="#fff" opacity=".92"/>
+                <rect x="24" y="54" width="12" height="18" rx="4" fill="#fff" opacity=".85"/>
+                <rect x="40" y="54" width="12" height="18" rx="4" fill="#fff" opacity=".85"/>
+                <rect x="66" y="16" width="34" height="46" rx="5" fill="#fff" opacity=".9"/>
+                <circle cx="76" cy="28" r="3.5" fill="#F5A623"/>
+                <circle cx="90" cy="28" r="3.5" fill="#F5A623"/>
+                <circle cx="76" cy="40" r="3.5" fill="#F5A623"/>
+                <circle cx="90" cy="40" r="3.5" fill="#F5A623"/>
+                <rect x="70" y="50" width="26" height="6" rx="3" fill="#F5A623" opacity=".8"/>
+                <path d="M56 60l8-16-4 0 8-16-10 18h4z" fill="#fff"/>
+              </svg>
+            </div>
+            <div class="service-body"><div class="service-body-icon"><i class="fa-solid fa-lightbulb"></i></div><h4>Electrician</h4><p>Wiring, repair, fan installation &amp; more.</p></div>
+          </div>
+          <div class="service-card" onclick="goToBrowse('mechanic')">
+            <div class="service-img grad-3">
+              <svg viewBox="0 0 120 90" class="service-illus">
+                <rect x="20" y="42" width="80" height="20" rx="8" fill="#fff" opacity=".92"/>
+                <path d="M32 42c2-10 10-16 20-16h16c10 0 18 6 20 16H32z" fill="#fff" opacity=".85"/>
+                <rect x="44" y="30" width="12" height="12" rx="2" fill="#3BB7C4"/>
+                <rect x="62" y="30" width="12" height="12" rx="2" fill="#3BB7C4"/>
+                <circle cx="38" cy="64" r="9" fill="#fff"/>
+                <circle cx="38" cy="64" r="4" fill="#2C8F9C"/>
+                <circle cx="82" cy="64" r="9" fill="#fff"/>
+                <circle cx="82" cy="64" r="4" fill="#2C8F9C"/>
+              </svg>
+            </div>
+            <div class="service-body"><div class="service-body-icon"><i class="fa-solid fa-wrench"></i></div><h4>Mechanic</h4><p>General service, repair &amp; maintenance.</p></div>
+          </div>
+          <div class="service-card" onclick="goToBrowse('cleaning')">
+            <div class="service-img grad-4">
+              <svg viewBox="0 0 120 90" class="service-illus">
+                <circle cx="80" cy="18" r="9" fill="#fff" opacity=".95"/>
+                <path d="M62 46c0-10 8-17 18-17s18 7 18 17v10H62V46z" fill="#fff" opacity=".92"/>
+                <rect x="66" y="52" width="14" height="20" rx="4" fill="#fff" opacity=".85"/>
+                <rect x="82" y="52" width="14" height="20" rx="4" fill="#fff" opacity=".85"/>
+                <path d="M22 34l14-6" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".9"/>
+                <rect x="16" y="38" width="20" height="26" rx="4" fill="#fff" opacity=".9"/>
+                <path d="M18 38c0-6 4-10 8-10s8 4 8 10" fill="none" stroke="#fff" stroke-width="3" opacity=".9"/>
+                <circle cx="20" cy="30" r="2.5" fill="#fff" opacity=".7"/>
+                <circle cx="28" cy="24" r="2" fill="#fff" opacity=".6"/>
+                <circle cx="34" cy="30" r="2" fill="#fff" opacity=".7"/>
+              </svg>
+            </div>
+            <div class="service-body"><div class="service-body-icon"><i class="fa-solid fa-spray-can-sparkles"></i></div><h4>Cleaning</h4><p>Home, kitchen, bathroom cleaning &amp; more.</p></div>
+          </div>
+          <div class="service-card" onclick="goToBrowse('cooking')" style="grid-column:span 2;">
+            <div class="service-img grad-5" style="justify-content:flex-start; gap:26px; padding-left:24px;">
+              <svg viewBox="0 0 60 90" class="service-illus" style="width:56px;">
+                <circle cx="30" cy="18" r="9" fill="#fff" opacity=".95"/>
+                <path d="M12 46c0-10 8-17 18-17s18 7 18 17v10H12V46z" fill="#fff" opacity=".92"/>
+                <rect x="16" y="52" width="14" height="20" rx="4" fill="#fff" opacity=".85"/>
+                <rect x="32" y="52" width="14" height="20" rx="4" fill="#fff" opacity=".85"/>
+              </svg>
+              <svg viewBox="0 0 100 90" class="service-illus" style="width:80px;">
+                <path d="M20 50c0-4 3-6 7-6h46c4 0 7 2 7 6v4H20v-4z" fill="#fff" opacity=".9"/>
+                <rect x="24" y="54" width="52" height="18" rx="6" fill="#fff" opacity=".95"/>
+                <path d="M35 40c-2-6 2-10 2-16M50 40c-2-6 2-10 2-16M65 40c-2-6 2-10 2-16" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" opacity=".75"/>
+              </svg>
+            </div>
+            <div class="service-body"><div class="service-body-icon"><i class="fa-solid fa-kitchen-set"></i></div><h4>Cooking</h4><p>Delicious home-cooked meals, made fresh.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="section" id="how-it-works-anchor">
+    <div class="section-head">
+      <span class="eyebrow">How it works</span>
+      <h2>Three steps to a fixed home</h2>
+      <p>From booking to payment, Peplum keeps every step simple and transparent.</p>
+    </div>
+    <div class="steps-row">
+      <div class="step-card"><div class="step-num">1</div><h4>Choose a service</h4><p>Browse verified professionals by category, ratings and experience near you.</p></div>
+      <div class="step-card"><div class="step-num">2</div><h4>Book a time slot</h4><p>Pick a convenient date and time — your provider confirms within minutes.</p></div>
+      <div class="step-card"><div class="step-num">3</div><h4>Pay after service</h4><p>Only pay once the job is done and you're satisfied with the work.</p></div>
+    </div>
+  </section>
+
+  <section class="section" id="about-anchor" style="padding-top:0;">
+    <div class="section-head">
+      <span class="eyebrow">About Peplum</span>
+      <h2>Built to make home care effortless</h2>
+      <p>We connect households with background-checked plumbers, electricians, mechanics, cleaners and cooks — so you can get things fixed without the hassle of finding someone you trust.</p>
+    </div>
+  </section>
+
+  <footer id="contact-anchor">
+    <div class="brand-name" style="font-family:'Sora'; font-weight:800; margin-bottom:8px;">PEPLUM HOME SERVICES</div>
+    <p>support@peplum.com &nbsp;·&nbsp; +91 98765 43210 &nbsp;·&nbsp; © 2026 Peplum. All rights reserved.</p>
+  </footer>
+</div>
+
+<!-- ============= LOGIN PAGE ============= -->
+<div id="page-login" class="page">
+  <div class="auth-shell">
+    <div class="auth-visual">
+      <div class="auth-illustration"><i class="fa-solid fa-house-chimney-user"></i></div>
+      <h3>Welcome back to Peplum</h3>
+      <p>Log in to book your favorite services and track your ongoing requests.</p>
+    </div>
+    <div class="auth-form-col">
+      <div class="auth-card">
+        <a class="auth-back" onclick="showPage('page-landing')"><i class="fa-solid fa-arrow-left"></i> Back to home</a>
+        <h2>Welcome Back!</h2>
+        <p class="sub">Login to book your favorite services</p>
+        <div class="field"><label>Email or Username</label><input type="text" placeholder="you@example.com"></div>
+        <div class="field"><label>Password</label><input type="password" placeholder="••••••••"></div>
+        <div class="form-foot-link"><a onclick="alert('Password reset link sent (demo).')">Forgot password?</a></div>
+        <button class="btn btn-primary btn-block" onclick="showPage('page-customer-dashboard')">Login</button>
+        <div class="switch-line">Don't have an account? <a onclick="showPage('page-register')">Register here</a></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============= REGISTER PAGE (Customer / Provider tabs) ============= -->
+<div id="page-register" class="page">
+  <div class="auth-shell">
+    <div class="auth-form-col">
+      <div class="auth-card">
+        <a class="auth-back" onclick="showPage('page-landing')"><i class="fa-solid fa-arrow-left"></i> Back to home</a>
+        <h2>Create Your Account</h2>
+        <p class="sub">Join Peplum and get started</p>
+        <div class="role-tabs">
+          <div class="role-tab active" id="tab-customer" onclick="setRegisterTab('customer')">Customer</div>
+          <div class="role-tab" id="tab-provider" onclick="setRegisterTab('provider')">Service Provider</div>
+        </div>
+
+        <!-- Customer fields -->
+        <div id="customer-fields">
+          <div class="field"><label>Full Name</label><input type="text" placeholder="Arjun Kumar"></div>
+          <div class="field"><label>Email</label><input type="email" placeholder="arjun@example.com"></div>
+          <div class="field"><label>Phone Number</label><input type="text" placeholder="+91 90000 00000"></div>
+          <div class="field"><label>Password</label><input type="password" placeholder="••••••••"></div>
+          <div class="field"><label>Confirm Password</label><input type="password" placeholder="••••••••"></div>
+          <button class="btn btn-primary btn-block" onclick="showPage('page-customer-dashboard')">Register</button>
+        </div>
+
+        <!-- Provider fields (mirrors provider registration screen) -->
+        <div id="provider-fields" style="display:none;">
+          <div class="field-row">
+            <div class="field"><label>Full Name</label><input type="text" placeholder="Ramesh Kumar"></div>
+            <div class="field"><label>Email</label><input type="email" placeholder="ramesh@example.com"></div>
+          </div>
+          <div class="field-row">
+            <div class="field"><label>Phone Number</label><input type="text" placeholder="+91 90000 00000"></div>
+            <div class="field"><label>Service Type</label>
+              <select><option>-- Select Service --</option><option>Plumber</option><option>Electrician</option><option>Mechanic</option><option>Cleaning</option><option>Cooking</option></select>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field"><label>Experience (Years)</label><input type="text" placeholder="5"></div>
+            <div class="field"><label>Location</label><input type="text" placeholder="Chennai, Tamil Nadu"></div>
+          </div>
+          <div class="field">
+            <label>Upload ID Proof</label>
+            <div class="file-row">
+              <label class="file-btn">Choose File<input type="file" style="display:none" onchange="document.getElementById('fname').innerText=this.files[0]?this.files[0].name:'No file chosen'"></label>
+              <span class="file-name" id="fname">No file chosen</span>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-block" onclick="showPage('page-provider-dashboard')">Submit Application</button>
+        </div>
+
+        <div class="switch-line">Already have an account? <a onclick="showPage('page-login')">Login here</a></div>
+      </div>
+    </div>
+    <div class="auth-visual">
+      <div class="auth-illustration"><i class="fa-solid fa-user-plus"></i></div>
+      <h3 id="register-visual-title">Join thousands of happy homes</h3>
+      <p id="register-visual-sub">Create your account to book trusted professionals in minutes.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============= PROVIDER REGISTRATION (standalone, from "Become a Provider") ============= -->
+<div id="page-provider-register" class="page">
+  <div class="auth-shell">
+    <div class="auth-visual">
+      <div class="auth-illustration"><i class="fa-solid fa-toolbox"></i></div>
+      <h3>Grow your business with Peplum</h3>
+      <p>Get discovered by homeowners near you and manage bookings all in one place.</p>
+    </div>
+    <div class="auth-form-col">
+      <div class="auth-card">
+        <a class="auth-back" onclick="showPage('page-landing')"><i class="fa-solid fa-arrow-left"></i> Back to home</a>
+        <h2>Provider Registration</h2>
+        <p class="sub">Provide your details to join as a service provider</p>
+        <div class="field-row">
+          <div class="field"><label>Full Name</label><input type="text" placeholder="Ramesh Kumar"></div>
+          <div class="field"><label>Email</label><input type="email" placeholder="ramesh@example.com"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Phone Number</label><input type="text" placeholder="+91 90000 00000"></div>
+          <div class="field"><label>Service Type</label>
+            <select><option>-- Select Service --</option><option>Plumber</option><option>Electrician</option><option>Mechanic</option><option>Cleaning</option><option>Cooking</option></select>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Experience (Years)</label><input type="text" placeholder="5"></div>
+          <div class="field"><label>Location</label><input type="text" placeholder="Chennai, Tamil Nadu"></div>
+        </div>
+        <div class="field">
+          <label>Upload ID Proof</label>
+          <div class="file-row">
+            <label class="file-btn">Choose File<input type="file" style="display:none" onchange="document.getElementById('fname2').innerText=this.files[0]?this.files[0].name:'No file chosen'"></label>
+            <span class="file-name" id="fname2">No file chosen</span>
+          </div>
+        </div>
+        <button class="btn btn-primary btn-block" onclick="showPage('page-provider-dashboard')">Submit Application</button>
+        <div class="switch-line">Already have an account? <a onclick="showPage('page-login')">Login here</a></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============= BROWSE PROVIDERS (Plumbers near you) ============= -->
+<div id="page-browse" class="page">
+  <div class="dash-shell">
+    <div class="sidebar">
+      <div class="brand"><div class="brand-icon"><i class="fa-solid fa-house-chimney"></i></div><div><div class="brand-name">PEPLUM</div><div class="brand-sub">HOME SERVICES</div></div></div>
+      <a class="side-link" onclick="showPage('page-customer-dashboard')"><i class="fa-solid fa-gauge"></i> Dashboard</a>
+      <a class="side-link active"><i class="fa-solid fa-magnifying-glass"></i> Find Providers</a>
+      <a class="side-link" onclick="showPage('page-customer-dashboard')"><i class="fa-solid fa-calendar-check"></i> My Bookings</a>
+      <a class="side-link" onclick="showPage('page-customer-dashboard')"><i class="fa-solid fa-wallet"></i> Payments</a>
+      <a class="side-link" onclick="showPage('page-customer-dashboard')"><i class="fa-solid fa-user"></i> Profile</a>
+      <div class="sidebar-bottom">
+        <a class="side-link" onclick="showPage('page-customer-dashboard')"><i class="fa-solid fa-circle-question"></i> Support</a>
+        <a class="side-link" onclick="showPage('page-landing')"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+      </div>
+    </div>
+    <div class="dash-main">
+      <div class="topbar">
+        <div class="topbar-links"><a onclick="showPage('page-landing')">Home</a><a class="active-browse">Services</a><a onclick="showPage('page-customer-dashboard')">Dashboard</a></div>
+        <div class="topbar-user"><span>Hello, Arjun</span><div class="avatar">A</div></div>
+      </div>
+      <div class="browse-head">
+        <div>
+          <h2 style="font-size:22px; margin-bottom:4px;" id="browse-title">Plumbers</h2>
+          <p style="color:var(--muted); font-size:13.5px;" id="browse-sub">Find the best plumbers near you</p>
+        </div>
+        <button class="btn btn-ghost btn-sm"><i class="fa-solid fa-sliders"></i> Filters</button>
+      </div>
+      <div class="category-pills" style="display:flex; gap:10px; margin-bottom:22px; flex-wrap:wrap;">
+        <button class="btn btn-ghost btn-sm" onclick="goToBrowse('plumber')">Plumber</button>
+        <button class="btn btn-ghost btn-sm" onclick="goToBrowse('electrician')">Electrician</button>
+        <button class="btn btn-ghost btn-sm" onclick="goToBrowse('mechanic')">Mechanic</button>
+        <button class="btn btn-ghost btn-sm" onclick="goToBrowse('cleaning')">Cleaning</button>
+        <button class="btn btn-ghost btn-sm" onclick="goToBrowse('cooking')">Cooking</button>
+      </div>
+      <div class="provider-grid" id="provider-grid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============= CUSTOMER DASHBOARD ============= -->
+<div id="page-customer-dashboard" class="page">
+  <div class="dash-shell">
+    <div class="sidebar">
+      <div class="brand"><div class="brand-icon"><i class="fa-solid fa-house-chimney"></i></div><div><div class="brand-name">PEPLUM</div><div class="brand-sub">HOME SERVICES</div></div></div>
+      <a class="side-link active"><i class="fa-solid fa-gauge"></i> Dashboard</a>
+      <a class="side-link" onclick="showPage('page-customer-dashboard')"><i class="fa-solid fa-calendar-check"></i> My Bookings</a>
+      <a class="side-link" onclick="showPage('page-customer-dashboard')"><i class="fa-solid fa-wallet"></i> Payments</a>
+      <a class="side-link" onclick="showPage('page-customer-dashboard')"><i class="fa-solid fa-user"></i> Profile</a>
+      <div class="sidebar-bottom">
+        <a class="side-link" onclick="showPage('page-customer-dashboard')"><i class="fa-solid fa-circle-question"></i> Support</a>
+        <a class="side-link" onclick="showPage('page-landing')"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+      </div>
+    </div>
+    <div class="dash-main">
+      <div class="topbar">
+        <div class="topbar-links"><a onclick="showPage('page-landing')">Home</a><a onclick="goToBrowse('plumber')">Services</a><a class="active-browse">Dashboard</a></div>
+        <div class="topbar-user"><span>Hello, Arjun</span><div class="avatar">A</div></div>
+      </div>
+      <div class="welcome-block">
+        <h2>Welcome, Arjun 👋</h2>
+        <p>Here's what's happening with your bookings</p>
+      </div>
+      <div class="stat-row">
+        <div class="stat-card"><div class="label">Total Bookings</div><div class="value">12</div></div>
+        <div class="stat-card accent"><div class="label">Ongoing</div><div class="value">2</div></div>
+        <div class="stat-card"><div class="label">Completed</div><div class="value">9</div></div>
+        <div class="stat-card"><div class="label">Payments</div><div class="value">₹4,250</div></div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h3>Recent Bookings</h3><a onclick="goToBrowse('plumber')" style="color:var(--violet); font-size:13.5px; font-weight:600;">Book new →</a></div>
+        <div class="booking-row">
+          <div class="booking-avatar"><i class="fa-solid fa-faucet-drip"></i></div>
+          <div class="booking-info"><h4>Plumber · Ramesh Kumar</h4><p>Leakage in Kitchen &nbsp;·&nbsp; 24 May 2026, 10:00 AM</p></div>
+          <span class="badge badge-success">Accepted</span>
+          <button class="btn btn-ghost btn-sm" onclick="showPage('page-booking-detail')">View</button>
+        </div>
+        <div class="booking-row">
+          <div class="booking-avatar"><i class="fa-solid fa-bolt"></i></div>
+          <div class="booking-info"><h4>Electrician · Sanjay Singh</h4><p>Fan Installation &nbsp;·&nbsp; 26 May 2026, 02:00 PM</p></div>
+          <span class="badge badge-warn">Pending</span>
+          <button class="btn btn-ghost btn-sm" onclick="showPage('page-booking-detail')">View</button>
+        </div>
+        <div class="booking-row">
+          <div class="booking-avatar"><i class="fa-solid fa-broom"></i></div>
+          <div class="booking-info"><h4>Cleaning · Priya Sharma</h4><p>Bathroom Deep Clean &nbsp;·&nbsp; 20 May 2026, 09:30 AM</p></div>
+          <span class="badge badge-success">Completed</span>
+          <button class="btn btn-ghost btn-sm" onclick="showPage('page-booking-detail')">View</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============= PROVIDER DASHBOARD ============= -->
+<div id="page-provider-dashboard" class="page">
+  <div class="dash-shell">
+    <div class="sidebar">
+      <div class="brand"><div class="brand-icon"><i class="fa-solid fa-house-chimney"></i></div><div><div class="brand-name">PEPLUM</div><div class="brand-sub">HOME SERVICES</div></div></div>
+      <a class="side-link active"><i class="fa-solid fa-gauge"></i> Dashboard</a>
+      <a class="side-link" onclick="showPage('page-provider-dashboard')"><i class="fa-solid fa-calendar-check"></i> My Appointments</a>
+      <a class="side-link" onclick="showPage('page-provider-dashboard')"><i class="fa-regular fa-clock"></i> Availability</a>
+      <a class="side-link" onclick="showPage('page-provider-dashboard')"><i class="fa-solid fa-sack-dollar"></i> Earnings</a>
+      <a class="side-link" onclick="showPage('page-provider-dashboard')"><i class="fa-solid fa-user"></i> Profile</a>
+      <div class="sidebar-bottom">
+        <a class="side-link" onclick="showPage('page-landing')"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+      </div>
+    </div>
+    <div class="dash-main">
+      <div class="topbar">
+        <div class="topbar-links"><a onclick="showPage('page-landing')">Home</a><a class="active-browse">Dashboard</a></div>
+        <div class="topbar-user"><span>Ramesh Kumar</span><div class="avatar">R</div></div>
+      </div>
+      <div class="welcome-block">
+        <h2>Welcome, Ramesh Kumar 👋</h2>
+        <p>Manage your services and appointments</p>
+      </div>
+      <div class="stat-row">
+        <div class="stat-card"><div class="label">Total Bookings</div><div class="value">28</div></div>
+        <div class="stat-card accent"><div class="label">Upcoming</div><div class="value">4</div></div>
+        <div class="stat-card"><div class="label">Completed</div><div class="value">20</div></div>
+        <div class="stat-card"><div class="label">Earnings</div><div class="value">₹18,750</div></div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h3>Upcoming Appointments</h3></div>
+        <div class="booking-row">
+          <div class="booking-avatar"><i class="fa-solid fa-user"></i></div>
+          <div class="booking-info"><h4>Arjun Kumar</h4><p>Leakage in Kitchen &nbsp;·&nbsp; 24 May 2026, 10:00 AM</p></div>
+          <span class="badge badge-success">Accepted</span>
+          <button class="btn btn-ghost btn-sm" onclick="showPage('page-booking-detail')">View</button>
+        </div>
+        <div class="booking-row">
+          <div class="booking-avatar"><i class="fa-solid fa-user"></i></div>
+          <div class="booking-info"><h4>Priya Sharma</h4><p>Bathroom Pipe Fitting &nbsp;·&nbsp; 25 May 2026, 11:30 AM</p></div>
+          <span class="badge badge-warn">Pending</span>
+          <button class="btn btn-ghost btn-sm" onclick="showPage('page-booking-detail')">View</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============= BOOKING DETAIL ============= -->
+<div id="page-booking-detail" class="page">
+  <div class="dash-shell">
+    <div class="dash-main" style="width:100%; max-width:1000px; margin:0 auto;">
+      <div class="topbar">
+        <a class="back-link" onclick="showPage('page-customer-dashboard')"><i class="fa-solid fa-arrow-left"></i> Back</a>
+        <div class="topbar-user"><span>Hello, Arjun</span><div class="avatar">A</div></div>
+      </div>
+      <h2 style="font-size:22px; margin-bottom:20px;">Booking Details</h2>
+      <div class="detail-grid">
+        <div class="panel">
+          <div class="detail-provider">
+            <div class="photo"><i class="fa-solid fa-faucet-drip"></i></div>
+            <div>
+              <h4>Ramesh Kumar</h4>
+              <div class="rating"><i class="fa-solid fa-star"></i> 4.8 (134)</div>
+              <div class="loc"><i class="fa-solid fa-location-dot"></i> Chennai, Tamil Nadu</div>
+            </div>
+          </div>
+          <div class="detail-rows">
+            <div class="detail-row"><div class="k">Service</div><div class="v">Leakage in Kitchen</div></div>
+            <div class="detail-row"><div class="k">Date &amp; Time</div><div class="v">24 May 2026 · 10:00 AM</div></div>
+            <div class="detail-row"><div class="k">Address</div><div class="v">12, 3rd Street, Anna Nagar, Chennai – 600040</div></div>
+          </div>
+          <div class="total-row">
+            <div>
+              <div class="k" style="font-size:12px; color:var(--muted); font-weight:600; text-transform:uppercase;">Total Amount</div>
+              <div class="v">₹500</div>
+            </div>
+            <button class="btn btn-primary" onclick="alert('Payment will be collected after service completion.')">Pay After Service</button>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><h3>Status</h3></div>
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-dot done"><i class="fa-solid fa-check"></i></div>
+              <div class="tl-text"><h5>Booking Confirmed</h5><p>20 May 2026 · 09:15 AM</p></div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot done"><i class="fa-solid fa-check"></i></div>
+              <div class="tl-text"><h5>Provider Accepted</h5><p>20 May 2026 · 09:30 AM</p></div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot pending"><i class="fa-regular fa-circle"></i></div>
+              <div class="tl-text"><h5>Service Completed</h5><p>Pending</p></div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot pending"><i class="fa-regular fa-circle"></i></div>
+              <div class="tl-text"><h5>Payment</h5><p>Pay after service completion</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function showPage(id){
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    window.scrollTo(0,0);
+  }
+  function scrollToSection(e,id){
+    e.preventDefault();
+    showPage('page-landing');
+    setTimeout(()=>{ document.getElementById(id).scrollIntoView({behavior:'smooth'}); }, 60);
+  }
+  function setRegisterTab(role){
+    const custTab = document.getElementById('tab-customer');
+    const provTab = document.getElementById('tab-provider');
+    const custFields = document.getElementById('customer-fields');
+    const provFields = document.getElementById('provider-fields');
+    const vTitle = document.getElementById('register-visual-title');
+    const vSub = document.getElementById('register-visual-sub');
+    if(role==='customer'){
+      custTab.classList.add('active'); provTab.classList.remove('active');
+      custFields.style.display='block'; provFields.style.display='none';
+      vTitle.innerText='Join thousands of happy homes';
+      vSub.innerText='Create your account to book trusted professionals in minutes.';
+    } else {
+      provTab.classList.add('active'); custTab.classList.remove('active');
+      custFields.style.display='none'; provFields.style.display='block';
+      vTitle.innerText='Grow your business with Peplum';
+      vSub.innerText='Register as a provider to get discovered by homeowners near you.';
+    }
+  }
+
+  const categoryData = {
+    plumber: {
+      label:'Plumbers', icon:'fa-faucet-drip',
+      providers:[
+        {name:'Ramesh Kumar', exp:'6 Years Experience', loc:'Chennai, Tamil Nadu', rating:'4.8 (134)', price:'₹350 - ₹700'},
+        {name:'Sanjay Singh', exp:'8 Years Experience', loc:'Chennai, Tamil Nadu', rating:'4.6 (96)', price:'₹300 - ₹600'},
+        {name:'Vikram M', exp:'10 Years Experience', loc:'Chennai, Tamil Nadu', rating:'4.7 (110)', price:'₹400 - ₹800'},
+        {name:'Suresh Babu', exp:'4 Years Experience', loc:'Coimbatore, Tamil Nadu', rating:'4.5 (58)', price:'₹300 - ₹550'},
+      ]
+    },
+    electrician: {
+      label:'Electricians', icon:'fa-bolt',
+      providers:[
+        {name:'Anand Raj', exp:'9 Years Experience', loc:'Chennai, Tamil Nadu', rating:'4.7 (142)', price:'₹300 - ₹650'},
+        {name:'Dinesh Kumar', exp:'5 Years Experience', loc:'Chennai, Tamil Nadu', rating:'4.5 (77)', price:'₹280 - ₹550'},
+        {name:'Prakash V', exp:'11 Years Experience', loc:'Coimbatore, Tamil Nadu', rating:'4.9 (188)', price:'₹350 - ₹700'},
+        {name:'Naveen S', exp:'3 Years Experience', loc:'Madurai, Tamil Nadu', rating:'4.3 (34)', price:'₹250 - ₹500'},
+      ]
+    },
+    mechanic: {
+      label:'Mechanics', icon:'fa-car-side',
+      providers:[
+        {name:'Vikram M', exp:'10 Years Experience', loc:'Chennai, Tamil Nadu', rating:'4.7 (110)', price:'₹400 - ₹900'},
+        {name:'Rahul Nair', exp:'6 Years Experience', loc:'Chennai, Tamil Nadu', rating:'4.6 (88)', price:'₹350 - ₹800'},
+        {name:'Ashok Kumar', exp:'8 Years Experience', loc:'Coimbatore, Tamil Nadu', rating:'4.8 (150)', price:'₹400 - ₹850'},
+        {name:'Ganesh P', exp:'4 Years Experience', loc:'Madurai, Tamil Nadu', rating:'4.4 (52)', price:'₹300 - ₹700'},
+      ]
+    },
+    cleaning: {
+      label:'Cleaning Professionals', icon:'fa-broom',
+      providers:[
+        {name:'Priya Sharma', exp:'5 Years Experience', loc:'Chennai, Tamil Nadu', rating:'4.8 (163)', price:'₹250 - ₹500'},
+        {name:'Lakshmi N', exp:'7 Years Experience', loc:'Chennai, Tamil Nadu', rating:'4.6 (94)', price:'₹220 - ₹450'},
+        {name:'Kavya R', exp:'3 Years Experience', loc:'Coimbatore, Tamil Nadu', rating:'4.5 (61)', price:'₹200 - ₹420'},
+        {name:'Meena S', exp:'6 Years Experience', loc:'Madurai, Tamil Nadu', rating:'4.7 (120)', price:'₹230 - ₹460'},
+      ]
+    },
+    cooking: {
+      label:'Home Cooks', icon:'fa-utensils',
+      providers:[
+        {name:'Radha Krishnan', exp:'8 Years Experience', loc:'Chennai, Tamil Nadu', rating:'4.9 (210)', price:'₹400 - ₹900'},
+        {name:'Selvi M', exp:'6 Years Experience', loc:'Chennai, Tamil Nadu', rating:'4.7 (140)', price:'₹350 - ₹800'},
+        {name:'Geetha V', exp:'4 Years Experience', loc:'Coimbatore, Tamil Nadu', rating:'4.6 (85)', price:'₹300 - ₹700'},
+        {name:'Kamala D', exp:'10 Years Experience', loc:'Madurai, Tamil Nadu', rating:'4.8 (175)', price:'₹380 - ₹850'},
+      ]
+    }
+  };
+
+  function goToBrowse(category){
+    renderBrowse(category);
+    showPage('page-browse');
+  }
+
+  function renderBrowse(category){
+    const data = categoryData[category] || categoryData.plumber;
+    document.getElementById('browse-title').innerText = data.label;
+    document.getElementById('browse-sub').innerText = `Find the best ${data.label.toLowerCase()} near you`;
+    const grid = document.getElementById('provider-grid');
+    grid.innerHTML = data.providers.map(p => `
+      <div class="provider-card">
+        <div class="provider-photo"><i class="fa-solid ${data.icon}"></i></div>
+        <div class="provider-body">
+          <h4>${p.name}</h4>
+          <div class="loc"><i class="fa-solid fa-location-dot"></i> ${p.loc}</div>
+          <div class="provider-meta">
+            <div class="rating"><i class="fa-solid fa-star"></i> ${p.rating}</div>
+            <div class="exp">${p.exp}</div>
+          </div>
+          <div class="price-row">
+            <div class="price">${p.price}</div>
+            <button class="btn btn-primary btn-sm" onclick="showPage('page-booking-detail')">Book Now</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  renderBrowse('plumber');
+</script>
+</body>
+</html>
