@@ -26,7 +26,7 @@ The system includes appointment booking, provider approval, availability managem
 
 | Module                 | Functionality                       |
 | ---------------------- | ----------------------------------- |
-| Authentication         | Customer and Provider registration  |
+| Authentication         | Customer and Provider registrations  |
 | Service Booking        | Customers can schedule appointments |
 | Provider Registration  | Service providers can apply         |
 | Availability           | Providers manage availability       |
